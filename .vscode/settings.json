@@ -1,0 +1,9 @@
+{
+    "go.inferGopath": false,
+    "terminal.integrated.env.linux": {
+        "GOPRIVATE": "github.com"
+    },
+    "terminal.integrated.env.osx": {
+        "GOPRIVATE": "github.com"
+    }
+}

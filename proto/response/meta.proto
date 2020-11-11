@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package decemtech.proto.helpers.response;
+
+option go_package = "github.com/Decem-Technology/service-helper/proto/response";
+
+import "google/protobuf/wrappers.proto";
+
+message Meta {
+    google.protobuf.Int32Value page = 1 [json_name = "page"];
+    google.protobuf.Int32Value per_page = 2 [json_name = "per_page"];
+    google.protobuf.Int32Value page_count = 3 [json_name = "page_count"];
+    google.protobuf.Int32Value total_count = 4 [json_name = "total_count"];
+    map<string, string> links = 5 [json_name = "links"];
+}

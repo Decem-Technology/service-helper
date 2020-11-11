@@ -1,0 +1,4 @@
+[[constraint]]
+  name = "github.com/micro/go-micro/v2"
+  branch = "master"
+  source = "github.com/Decem-Technology/nitro/v2"
