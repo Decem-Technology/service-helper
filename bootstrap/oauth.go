@@ -56,13 +56,15 @@ func init() {
 			panic(fmt.Sprintf("[OAUTH] Could not parse private.key error: %s", err))
 		}
 	}
-	key, err := ioutil.ReadFile(pwd + "/storage/public.key")
-	if err != nil {
-		panic(fmt.Sprintf("[OAUTH] public.key %s", err))
-	}
-	PublicKey, err = jwt.ParseRSAPublicKeyFromPEM(key)
-	if err != nil {
-		panic(fmt.Sprintf("[OAUTH] Could not parse public.key error: %s", err))
+	if os.Getenv("LOAD_PUBLIC_KEY") == "true" {
+		key, err := ioutil.ReadFile(pwd + "/storage/public.key")
+		if err != nil {
+			panic(fmt.Sprintf("[OAUTH] public.key %s", err))
+		}
+		PublicKey, err = jwt.ParseRSAPublicKeyFromPEM(key)
+		if err != nil {
+			panic(fmt.Sprintf("[OAUTH] Could not parse public.key error: %s", err))
+		}
 	}
 }
 
