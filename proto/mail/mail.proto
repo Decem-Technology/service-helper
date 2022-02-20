@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package decemtech.proto.helpers.mail;
+
+option go_package = "github.com/Decem-Technology/service-helper/proto/mail";
+
+message MailMessage {
+	string sender = 1;
+    string from = 2;
+	string receiver = 3;
+	repeated string to = 4;
+	repeated string cc = 5;
+	repeated string bcc = 6;
+	string subject = 7;
+	string link = 8;
+	string body = 9;
+	repeated string attach = 10;
+}
