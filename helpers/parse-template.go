@@ -9,7 +9,7 @@ import (
 func ParseTemplate(temp *template.Template, data interface{}) (*bytes.Buffer, error) {
 	var body bytes.Buffer
 	if err := temp.Execute(&body, data); err != nil {
-		fmt.Errorf("Load mail template error: %s\n", err.Error())
+		fmt.Printf("Load mail template error: %s\n", err.Error())
 		return nil, err
 	}
 	return &body, nil
