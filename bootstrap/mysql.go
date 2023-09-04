@@ -80,7 +80,6 @@ func CreateMySQLConnection() {
 
 	}
 	c.SetMaxIdleConns(10)
-	defer c.Close()
 	if debug, err := strconv.ParseBool(os.Getenv("APP_DEBUG")); err == nil {
 		if debug {
 			db = db.Debug()
