@@ -79,7 +79,7 @@ func CreateMySQLConnection() {
 		c.SetConnMaxLifetime(maxLifetime)
 
 	}
-	c.SetMaxIdleConns(10)
+	c.SetMaxIdleConns(2)
 	if debug, err := strconv.ParseBool(os.Getenv("APP_DEBUG")); err == nil {
 		if debug {
 			db = db.Debug()
