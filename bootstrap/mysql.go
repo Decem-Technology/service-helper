@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -18,6 +19,15 @@ type (
 
 // dbMySQL variable for define connection
 var dbMySQL *gorm.DB
+
+type MySQLConn struct {
+	mysql.Config
+	ConnectionName  string // empty is default
+	MaxIdleConns    int
+	MaxOpenConns    int
+	ConnMaxIdleTime *time.Duration
+	ConnMaxLifetime *time.Duration
+}
 
 // CreateMySQLConnection make connection
 func CreateMySQLConnection() {
@@ -36,16 +46,41 @@ func CreateMySQLConnection() {
 	}), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
+
 	if err != nil {
 		panic(fmt.Sprintf("[MySQL] connect database fail, error: %s", err))
 	}
 	fmt.Println("[MySQL] connected")
 
 	c, err := db.DB()
+
 	if err != nil {
 		panic(fmt.Sprintf("[MySQL] connection poll error: %s", err))
+	} else {
+		maxConn := 2
+		if v := os.Getenv("MYSQL_MAX_CONN"); v != "" {
+			if newConn, err := strconv.Atoi(v); err == nil {
+				maxConn = newConn
+			}
+		}
+		maxLifetime, _ := time.ParseDuration("4m")
+		if v := os.Getenv("MYSQL_MAX_LIFETIME"); v != "" {
+			maxLifetime, _ = time.ParseDuration(os.Getenv("MYSQL_MAX_LIFETIME"))
+		}
+		// if v := conf.MaxIdleConns; v > 0 {
+		// 	c.SetMaxIdleConns(v)
+		// }
+		if v := maxConn; v > 0 {
+			c.SetMaxOpenConns(v)
+		}
+		// if v := conf.ConnMaxIdleTime; v != nil {
+		// 	c.SetConnMaxIdleTime(*v)
+		// }
+		c.SetConnMaxLifetime(maxLifetime)
+
 	}
 	c.SetMaxIdleConns(10)
+	defer c.Close()
 	if debug, err := strconv.ParseBool(os.Getenv("APP_DEBUG")); err == nil {
 		if debug {
 			db = db.Debug()
